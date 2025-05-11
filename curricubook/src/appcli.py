@@ -28,7 +28,7 @@ class AppCLI:
         self.parser.add_argument(
             "-p", "--path",
             help="Project files path",
-            default="files",
+            default="demo",
             type=str
         )
         
@@ -37,7 +37,7 @@ class AppCLI:
             help="The command to execute: init, add <element>, display, generate"
         )
 
-        self.args = self.parser.parse_args()
+        self.args, self.command_args = self.parser.parse_known_args()
 
     @staticmethod
     def print_initial_banner():
@@ -49,4 +49,7 @@ class AppCLI:
 
     def print_help(self):
         self.parser.print_help()
+        print()
+
+        print("Write \"command help\" to get a detailed help of each command")
         print()

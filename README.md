@@ -28,4 +28,5 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 3) Initialize the virtual environment and download all dependencies
 ```bash
+uv sync
 ```

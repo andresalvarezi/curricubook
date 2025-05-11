@@ -6,13 +6,13 @@ from src.commands.generatecommand import GenerateCommand
 class CommandFactory:
 
     @staticmethod
-    def generateCommand(cli):
-        if cli.args.command == "init":
-            return InitCommand(cli)
-        elif cli.args.command == "display":
-            return DisplayCommand(cli)
-        elif cli.args.command == "add":
-            return AddCommand(cli)
-        elif cli.args.command == "generate":
-            return GenerateCommand(cli)
+    def generateCommand(command):
+        if command == "init":
+            return InitCommand()
+        elif command == "display":
+            return DisplayCommand()
+        elif command == "add":
+            return AddCommand()
+        elif command == "generate":
+            return GenerateCommand()
         return None

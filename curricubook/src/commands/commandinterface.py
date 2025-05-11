@@ -5,9 +5,6 @@ class Command(ABC):
     name = ""
     description = ""
 
-    def __init__(self, settings):
-        self.settings = settings
-        
     @abstractmethod
     def execute(self):
         pass
