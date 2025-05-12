@@ -1,1 +1,0 @@
-{{ python-executable }} -m IPython "$@"

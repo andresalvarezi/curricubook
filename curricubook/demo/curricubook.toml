@@ -1,8 +1,0 @@
-[curricubook]
-name = My curricubook
-author_name = Your name
-author_email = your@email.com
-
-[generation]
-template = Default
-
