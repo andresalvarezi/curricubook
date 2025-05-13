@@ -1,10 +1,11 @@
-from src.commands.commandinterface import Command
-from src.appcli import AppCLI
 import os
 from pathlib import Path
 import sys
-from src.utils import Utils
 import shutil
+
+from src.commands.commandinterface import Command
+from src.appcli import AppCLI
+from src.utils import Utils
 
 class InitCommand(Command):
 
@@ -14,7 +15,7 @@ class InitCommand(Command):
     def execute(self, cli):
         self.cli = cli
 
-        if "help" in cli.command_args:
+        if "help" in cli.args.command_args:
             self.help()
             return
         
@@ -35,12 +36,13 @@ class InitCommand(Command):
         path = Path(self.cli.args.path)
         if path.is_dir():
             if any(path.iterdir()):
-                if "--force" in self.cli.command_args:
+                if "--force" in self.cli.args.command_args:
                     print("...target folder found, removing current contents...")
                     shutil.rmtree(self.cli.args.path)
 
                 else:
                     print("...target folder found, but is not empty! Use --force to remove the current contents")
+                    print("...done!")
                     print()
                     sys.exit()
 

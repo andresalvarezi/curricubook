@@ -1,12 +1,79 @@
+import os
+from pathlib import Path
+import sys
+
 from src.commands.commandinterface import Command
+from src.appcli import AppCLI
+import datetime
+from src.utils import Utils
 
 class AddCommand(Command):
 
     name = "add"
     description = "Add a new resource to this Curricubook"
     
-    def execute(self):
-        pass
+    def execute(self, cli):
+        self.cli = cli
+
+        element_type = None
+        if len(cli.args.command_args) > 0:
+            element_type = (cli.args.command_args[0] if cli.args.command_args[0] in [ "personal", "education", "work", "extra" ] else None)
+
+        if not element_type or "help" in cli.args.command_args:
+            self.help()
+            return
+        
+        print(f"Adding a new {element_type} element...")
+        self.add_element(element_type)
+        print()
+
+    def add_element(self, element_type):
+        Utils.print_if_verbose(self.cli, "...checking target folder...")
+
+        path = Path(self.cli.args.path)
+        if not path.is_dir():
+            print("...target folder not found!")
+            print()
+            sys.exit()
+
+        current_elements = Utils.load_elements(self.cli, self.cli.args.path, element_type)
+
+        filename_fragment = self.generate_name()
+
+        with open(os.path.join(self.cli.args.path, element_type, f"{element_type}_{filename_fragment}.toml"), "w") as element_file:
+            element_file.write(self.default_element_file_metadata_content(element_type))
+        
+        with open(os.path.join(self.cli.args.path, element_type, f"{element_type}_{filename_fragment}.md"), "w") as element_file:
+            element_file.write(self.default_element_file_content(element_type))
+        
+        print(f"...element {self.generate_name()} created!")
+
+    def generate_name(self):
+        now = datetime.datetime.now()
+        new_name = f"{now.year}{now.month:02d}{now.day:02d}_{now.hour:02d}{now.minute:02d}{now.second:02d}_{now.microsecond // 1000:03d}"
+        return new_name
+
+    def default_element_file_content(self, element_type):
+        now = datetime.datetime.now()
+
+        content  = f"# New {element_type}\n\n"
+        content += f"Write here the new item content\n"
+
+        return content
+
+    def default_element_file_metadata_content(self, element_type):
+        now = datetime.datetime.now()
+
+        content  = f"[{element_type}]\n"
+        content += f"title = New {element_type}\n"
+        content += f"date = {now.year}-{now.month:02d}-{now.day:02d}, {now.hour:02d}:{now.minute:02d}:{now.second:02d}\n"
+
+        return content
 
     def help(self):
-        pass
+        print("The ADD adds a new element to the current curricubook")
+        print()
+        print("options:")
+        print("  type: the type of element to be added: personal, education, work or extra")
+        print("  --force: overwrite the given path if not empty")
+        print()

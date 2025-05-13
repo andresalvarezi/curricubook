@@ -34,10 +34,20 @@ class AppCLI:
         
         self.parser.add_argument(
             "command",
-            help="The command to execute: init, add <element>, display, generate"
+            help="The command to execute",
+            choices=["init", "add", "display", "generate"],
+            type=str
         )
 
-        self.args, self.command_args = self.parser.parse_known_args()
+        self.parser.add_argument(
+            "command_args",
+            nargs=argparse.REMAINDER,
+            help="Command arguments",
+            default="",
+            type=str
+        )
+
+        self.args, self.unkown_args = self.parser.parse_known_args()
 
     @staticmethod
     def print_initial_banner():
