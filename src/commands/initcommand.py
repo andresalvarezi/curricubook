@@ -31,8 +31,6 @@ class InitCommand(Command):
         print()
 
     def initialize_project(self):
-        Utils.print_if_verbose(self.cli, "...checking target folder...")
-
         path = Path(self.cli.args.path)
         if path.is_dir():
             if any(path.iterdir()):
@@ -63,17 +61,20 @@ class InitCommand(Command):
         with open(os.path.join(self.cli.args.path, "curricubook.toml"), "w") as project_file:
             project_file.write(self.default_project_file_content())
         
-        print("...done!")
+        Utils.print_if_verbose(self.cli, "")
+        print("New Curricubook initialized!")
 
     def default_project_file_content(self):
         content = "[curricubook]\n"
-        content += "name = My curricubook\n"
-        content += "author_name = Your name\n"
-        content += "author_email = your@email.com\n"
+        content += "name = \"My Curricubook\"\n"
+        content += "author_name = \"Your name\"\n"
+        content += "author_email = \"your@email.com\"\n"
         content += "\n"
 
         content += "[generation]\n"
-        content += "template = Default\n"
+        content += "template = \"Default\"\n"
+        content += "generate_pdf = true\n"
+        content += "generate_html = true\n"
         content += "\n"
 
         return content

@@ -23,20 +23,23 @@ class AddCommand(Command):
             self.help()
             return
         
+        self.curricubook_settings = Utils.load_curricubook_settings(self.cli, Path(self.cli.args.path) / "curricubook.toml")
+
+        if self.curricubook_settings is None:
+            print("...curricubook.toml not found!")
+            print()
+            sys.exit()
+
         print(f"Adding a new {element_type} element...")
         self.add_element(element_type)
         print()
 
     def add_element(self, element_type):
-        Utils.print_if_verbose(self.cli, "...checking target folder...")
-
         path = Path(self.cli.args.path)
         if not path.is_dir():
             print("...target folder not found!")
             print()
             sys.exit()
-
-        current_elements = Utils.load_elements(self.cli, self.cli.args.path, element_type)
 
         filename_fragment = self.generate_name()
 
@@ -46,7 +49,8 @@ class AddCommand(Command):
         with open(os.path.join(self.cli.args.path, element_type, f"{element_type}_{filename_fragment}.md"), "w") as element_file:
             element_file.write(self.default_element_file_content(element_type))
         
-        print(f"...element {self.generate_name()} created!")
+        Utils.print_if_verbose(self.cli, "")
+        print(f"Element {self.generate_name()} created!")
 
     def generate_name(self):
         now = datetime.datetime.now()
@@ -65,8 +69,8 @@ class AddCommand(Command):
         now = datetime.datetime.now()
 
         content  = f"[{element_type}]\n"
-        content += f"title = New {element_type}\n"
-        content += f"date = {now.year}-{now.month:02d}-{now.day:02d}, {now.hour:02d}:{now.minute:02d}:{now.second:02d}\n"
+        content += f"title = \"New {element_type}\"\n"
+        content += f"date = \"{now.year}-{now.month:02d}-{now.day:02d}, {now.hour:02d}:{now.minute:02d}:{now.second:02d}\"\n"
 
         return content
 

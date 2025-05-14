@@ -1,4 +1,6 @@
+import toml
 from pathlib import Path
+
 from src.appcli import AppCLI
 
 class Utils():
@@ -13,16 +15,21 @@ class Utils():
         elements = []
 
         target_dir = Path(base_path_str) / element_type
-        Utils.print_if_verbose(cli, f"...looking for elements in {target_dir}")
 
         for item in target_dir.iterdir():
             if item.is_file() and item.suffix.lower() == '.toml':
-                Utils.print_if_verbose(cli, f"...found element: {item.name}")
                 elements.append({
                     "name": item.stem,
                     "metadata": item,
                     "content": Path(base_path_str) / element_type / f"{item.stem}.md"
                 })
 
-        Utils.print_if_verbose(cli, f"...{len(elements)} elements where found")
         return elements
+
+    @staticmethod
+    def load_curricubook_settings(cli, curricubook_path):
+        curricubook_file = Path(curricubook_path)
+        if not curricubook_file.is_file():
+            return None
+
+        return toml.load(curricubook_file)

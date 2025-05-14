@@ -18,24 +18,37 @@ class DisplayCommand(Command):
             self.help()
             return
         
+        self.curricubook_settings = Utils.load_curricubook_settings(self.cli, Path(self.cli.args.path) / "curricubook.toml")
+
+        if self.curricubook_settings is None:
+            print("...curricubook.toml not found!")
+            print()
+            sys.exit()
+
         print(f"Displaying current elements...")
-        selft.display_elemenst()
+        self.display_elements()
         print()
 
     def display_elements(self):
-        Utils.print_if_verbose(self.cli, "...checking target folder...")
-
         path = Path(self.cli.args.path)
         if not path.is_dir():
             print("...target folder not found!")
             print()
             sys.exit()
 
-        # ...
+        for element_type in [ "personal", "education", "work", "extra" ]:
+            current_elements = Utils.load_elements(self.cli, self.cli.args.path, element_type)
 
-        print("...done!")
+            if len(current_elements) > 0:
+                print()
+                print(f"{element_type.upper()} ({len(current_elements)} elements):")
+                print()
+                
+                for elem in current_elements:
+                    print(f"  {elem['name']}")
+                    print(f"   - Metadata file: {str(elem['metadata'])}")
+                    print(f"   - Content file: {str(elem['content'])}")
 
     def help(self):
         print("The DISPLAY command all elements on the current Curricubook")
         print()
-
