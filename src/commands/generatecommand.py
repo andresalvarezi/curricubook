@@ -41,13 +41,13 @@ class GenerateCommand(Command):
 
         if self.curricubook_settings['generation']['generate_pdf']:
             Utils.print_if_verbose(self.cli, "")
-            print(f"...generating PDF document...")
+            print(f"Generating PDF document...")
             generator = GeneratorPDF(self.cli, self.curricubook_settings)
             generator.generate()
 
         if self.curricubook_settings['generation']['generate_html']:
             Utils.print_if_verbose(self.cli, "")
-            print(f"...generating HTML document...")
+            print(f"Generating HTML document...")
             generator = GeneratorHTML(self.cli, self.curricubook_settings)
             generator.generate()
 
