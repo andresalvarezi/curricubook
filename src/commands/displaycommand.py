@@ -45,7 +45,7 @@ class DisplayCommand(Command):
                 print()
                 
                 for elem in current_elements:
-                    print(f"  {elem['name']}")
+                    print(f"  {elem['title']} ({elem['date']})")
                     print(f"   - Metadata file: {str(elem['metadata'])}")
                     print(f"   - Content file: {str(elem['content'])}")
 

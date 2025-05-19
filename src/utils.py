@@ -18,8 +18,12 @@ class Utils():
 
         for item in target_dir.iterdir():
             if item.is_file() and item.suffix.lower() == '.toml':
+                metadata_file = toml.load(item)
+
                 elements.append({
-                    "name": item.stem,
+                    "item_name": item.stem,
+                    "title": metadata_file['metadata']['title'],
+                    "date": metadata_file['metadata']['date'],
                     "metadata": item,
                     "content": Path(base_path_str) / element_type / f"{item.stem}.md"
                 })

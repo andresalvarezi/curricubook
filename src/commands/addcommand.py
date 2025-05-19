@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import sys
+import toml
 
 from src.commands.commandinterface import Command
 from src.appcli import AppCLI
@@ -50,9 +51,21 @@ class AddCommand(Command):
             element_file.write(self.default_element_file_content(element_type))
         
         Utils.print_if_verbose(self.cli, "")
-        print(f"Element {self.generate_name()} created!")
+        print(f"...new element created!")
+        print()
+
+        target_dir = Path(self.cli.args.path) / element_type
+        metadata_file = toml.load(Path(self.cli.args.path) / element_type / f"{element_type}_{filename_fragment}.toml")
+
+        print(f"{metadata_file['metadata']['title']} ({metadata_file['metadata']['date']})")
+        print(f" - Metadata file: {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}.toml")
+        print(f" - Content file: {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}.toml")
 
     def generate_name(self):
+        timestamp_numeric = datetime.datetime.now().timestamp()
+        return str(timestamp_numeric).replace(".", "_")
+
+    def generate_datebased_name(self):
         now = datetime.datetime.now()
         new_name = f"{now.year}{now.month:02d}{now.day:02d}_{now.hour:02d}{now.minute:02d}{now.second:02d}_{now.microsecond // 1000:03d}"
         return new_name
@@ -68,7 +81,7 @@ class AddCommand(Command):
     def default_element_file_metadata_content(self, element_type):
         now = datetime.datetime.now()
 
-        content  = f"[{element_type}]\n"
+        content  = f"[metadata]\n"
         content += f"title = \"New {element_type}\"\n"
         content += f"date = \"{now.year}-{now.month:02d}-{now.day:02d}, {now.hour:02d}:{now.minute:02d}:{now.second:02d}\"\n"
 
@@ -79,5 +92,4 @@ class AddCommand(Command):
         print()
         print("options:")
         print("  type: the type of element to be added: personal, education, work or extra")
-        print("  --force: overwrite the given path if not empty")
         print()
