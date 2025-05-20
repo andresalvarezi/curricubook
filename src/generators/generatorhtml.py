@@ -35,36 +35,83 @@ class GeneratorHTML:
         Utils.print_if_verbose(self.cli, "...done!")
 
     def generate_head(self):
-        html  = "<!DOCTYPE html>\n"
-        html += "<html lang=\"en\">\n\n"
+        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "header.html"
+        with open(source_path, "r") as f:
+            html = f.read()
 
-        html += "<head>\n"
-        html += "    <meta charset=\"UTF-8\">\n"
-        html += "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-        html += f"    <title>{self.curricubook_settings['curricubook']['name']} - Curricubook</title>\n"
-        html += f"    <link rel=\"stylesheet\" href=\"styles.css\">\n"
-        html += "</head>\n\n"
-
-        html += "<body>\n"
+        html = html.replace("{curricubook.name}", self.curricubook_settings['curricubook']['name'])
+        html = html.replace("{curricubook.author_name}", self.curricubook_settings['curricubook']['author_name'])
+        html = html.replace("{curricubook.author_email}", self.curricubook_settings['curricubook']['author_email'])
 
         return html
 
     def generate_body(self):
         html = ""
 
+        for element_type in [ "education", "work", "personal", "extra" ]:
+            current_elements = Utils.load_elements(self.cli, self.cli.args.path, element_type)
+
+            if len(current_elements) > 0:
+                html += self.generate_section_html(html, element_type, current_elements)
+
+        return html
+
+    def generate_section_html(self, html, element_type, current_elements):
+        html = ""
+
+        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "beginsection.html"
+        with open(source_path, "r") as f:
+            htmlsection = f.read()
+
+        htmlsection = htmlsection.replace("{section.name}", element_type)
+        html += htmlsection
+
+        for elem in current_elements:
+            html += self.generate_element_html(html, element_type, elem)
+
+        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "endsection.html"
+        with open(source_path, "r") as f:
+            htmlsection = f.read()
+
+        htmlsection = htmlsection.replace("{section.name}", element_type)
+        html += htmlsection
+
+        return html
+
+    def generate_element_html(self, html, element_type, elem):
+        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "element.html"
+        with open(source_path, "r") as f:
+            html = f.read()
+
+        html = html.replace("{element.title}", elem['title'])
+        html = html.replace("{element.date}", elem['date'])
+ 
+        content_file = str(elem['content'])
+        with open(source_path, "r") as f:
+            content = f.read()
+
+        html = html.replace("{element.content}", content)
+
         return html
 
     def generate_footer(self):
-        html  = "</body>\n\n"
+        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "footer.html"
+        with open(source_path, "r") as f:
+            html = f.read()
 
-        html += "</html>\n"
+        html = html.replace("{curricubook.name}", self.curricubook_settings['curricubook']['name'])
+        html = html.replace("{curricubook.author_name}", self.curricubook_settings['curricubook']['author_name'])
+        html = html.replace("{curricubook.author_email}", self.curricubook_settings['curricubook']['author_email'])
 
         return html
 
     def copy_template_assets(self):
         source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html"
 
-        css_source = source_path / "styles.css"
-        css_target = Path(self.cli.args.path) / "output" / "html" / "styles.css"
+        css_source = source_path / "assets"
+        css_target = Path(self.cli.args.path) / "output" / "html" / "assets"
 
-        shutil.copy2(str(css_source), str(css_target))
+        if css_target.is_dir():
+            shutil.rmtree(css_target)
+
+        shutil.copytree(css_source, css_target)

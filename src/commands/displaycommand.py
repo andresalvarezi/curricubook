@@ -36,7 +36,7 @@ class DisplayCommand(Command):
             print()
             sys.exit()
 
-        for element_type in [ "personal", "education", "work", "extra" ]:
+        for element_type in [ "education", "work", "personal", "extra" ]:
             current_elements = Utils.load_elements(self.cli, self.cli.args.path, element_type)
 
             if len(current_elements) > 0:
