@@ -47,8 +47,11 @@ class AddCommand(Command):
         with open(os.path.join(self.cli.args.path, element_type, f"{element_type}_{filename_fragment}.toml"), "w") as element_file:
             element_file.write(self.default_element_file_metadata_content(element_type))
         
-        with open(os.path.join(self.cli.args.path, element_type, f"{element_type}_{filename_fragment}.md"), "w") as element_file:
-            element_file.write(self.default_element_file_content(element_type))
+        with open(os.path.join(self.cli.args.path, element_type, f"{element_type}_{filename_fragment}_brief.md"), "w") as element_file:
+            element_file.write(self.default_element_file_content_brief(element_type))
+        
+        with open(os.path.join(self.cli.args.path, element_type, f"{element_type}_{filename_fragment}_long.md"), "w") as element_file:
+            element_file.write(self.default_element_file_content_long(element_type))
         
         Utils.print_if_verbose(self.cli, "")
         print(f"...new element created!")
@@ -59,7 +62,8 @@ class AddCommand(Command):
 
         print(f"{metadata_file['metadata']['title']} ({metadata_file['metadata']['date']})")
         print(f" - Metadata file: {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}.toml")
-        print(f" - Content file: {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}.toml")
+        print(f" - Content file (brief): {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}_brief.toml")
+        print(f" - Content file (long): {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}_long.toml")
 
     def generate_name(self):
         timestamp_numeric = datetime.datetime.now().timestamp()
@@ -70,10 +74,18 @@ class AddCommand(Command):
         new_name = f"{now.year}{now.month:02d}{now.day:02d}_{now.hour:02d}{now.minute:02d}{now.second:02d}_{now.microsecond // 1000:03d}"
         return new_name
 
-    def default_element_file_content(self, element_type):
+    def default_element_file_content_brief(self, element_type):
         now = datetime.datetime.now()
 
-        content  = f"# New {element_type}\n\n"
+        content  = f"# New {element_type} (brief format)\n\n"
+        content += f"Write here the new item content\n"
+
+        return content
+
+    def default_element_file_content_long(self, element_type):
+        now = datetime.datetime.now()
+
+        content  = f"# New {element_type} (long format)\n\n"
         content += f"Write here the new item content\n"
 
         return content

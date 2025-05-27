@@ -83,14 +83,18 @@ class GeneratorHTML:
         with open(source_path, "r") as f:
             html = f.read()
 
+        html = html.replace("{element.item_name}", elem['item_name'])
         html = html.replace("{element.title}", elem['title'])
         html = html.replace("{element.date}", elem['date'])
  
-        content_file = str(elem['content'])
-        with open(source_path, "r") as f:
-            content = f.read()
+        with open(str(elem['content_brief']), "r") as f:
+            content_brief = f.read()
 
-        html = html.replace("{element.content}", content)
+        with open(str(elem['content_long']), "r") as f:
+            content_long = f.read()
+
+        html = html.replace("{element.content_brief}", content_brief)
+        html = html.replace("{element.content_long}", content_long)
 
         return html
 

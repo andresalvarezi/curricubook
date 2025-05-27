@@ -4,105 +4,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My curricubook - Curricubook</title>
+    <title>Test - Curricubook</title>
     <link rel="stylesheet" href="assets/styles.css">
 </head>
 
 <body>
 
     <header>
-        <h1>My curricubook</h1>
+        <h1>Test</h1>
     </header>
 
     <main>
-    <section>
-        <h1>education</h1>
-        <element>
-            <h2>New education</h2>
-            <h3>2025-05-19, 17:17:01</h3>
-            <div>        <element>
-            <h2>{element.title}</h2>
-            <h3>{element.date}</h3>
-            <div>{element.content}</div>
-        </element>
-</div>
-        </element>
-        <element>
-            <h2>New education</h2>
-            <h3>2025-05-19, 17:15:31</h3>
-            <div>        <element>
-            <h2>{element.title}</h2>
-            <h3>{element.date}</h3>
-            <div>{element.content}</div>
-        </element>
-</div>
-        </element>
-        <element>
-            <h2>New education</h2>
-            <h3>2025-05-19, 17:16:38</h3>
-            <div>        <element>
-            <h2>{element.title}</h2>
-            <h3>{element.date}</h3>
-            <div>{element.content}</div>
-        </element>
-</div>
-        </element>
-    </section>
-    <section>
+        <div id="overlay"></div>
+
+    <div class="section">
         <h1>work</h1>
-        <element>
+        <div class="element">
             <h2>New work</h2>
-            <h3>2025-05-19, 17:07:52</h3>
-            <div>        <element>
-            <h2>{element.title}</h2>
-            <h3>{element.date}</h3>
-            <div>{element.content}</div>
-        </element>
+            <h3>2025-05-27, 14:16:49</h3>
+            <div># New work (brief format)
+
+Write here the new item content
 </div>
-        </element>
-        <element>
+            <button onclick="showDetails('work_1748348209_904575');">More info</button>
+        </div>
+
+        <div class="details" id="work_1748348209_904575">
             <h2>New work</h2>
-            <h3>2025-05-19, 17:07:49</h3>
-            <div>        <element>
-            <h2>{element.title}</h2>
-            <h3>{element.date}</h3>
-            <div>{element.content}</div>
-        </element>
+            <h3>2025-05-27, 14:16:49</h3>
+            <div># New work (long format)
+
+Write here the new item content
 </div>
-        </element>
-    </section>
-    <section>
+            <button onclick="closeDetails('work_1748348209_904575');">Close</button>
+        </div>
+        <div class="element">
+            <h2>New work</h2>
+            <h3>2025-05-27, 14:16:47</h3>
+            <div># New work (brief format)
+
+Write here the new item content
+</div>
+            <button onclick="showDetails('work_1748348207_454601');">More info</button>
+        </div>
+
+        <div class="details" id="work_1748348207_454601">
+            <h2>New work</h2>
+            <h3>2025-05-27, 14:16:47</h3>
+            <div># New work (long format)
+
+Write here the new item content
+</div>
+            <button onclick="closeDetails('work_1748348207_454601');">Close</button>
+        </div>
+</div>
+    <div class="section">
         <h1>personal</h1>
-        <element>
+        <div class="element">
             <h2>New personal</h2>
-            <h3>2025-05-19, 17:02:53</h3>
-            <div>        <element>
-            <h2>{element.title}</h2>
-            <h3>{element.date}</h3>
-            <div>{element.content}</div>
-        </element>
+            <h3>2025-05-27, 14:16:54</h3>
+            <div># New personal (brief format)
+
+Write here the new item content
 </div>
-        </element>
-    </section>
-    <section>
-        <h1>extra</h1>
-        <element>
-            <h2>New extra</h2>
-            <h3>2025-05-19, 17:08:21</h3>
-            <div>        <element>
-            <h2>{element.title}</h2>
-            <h3>{element.date}</h3>
-            <div>{element.content}</div>
-        </element>
+            <button onclick="showDetails('personal_1748348214_20331');">More info</button>
+        </div>
+
+        <div class="details" id="personal_1748348214_20331">
+            <h2>New personal</h2>
+            <h3>2025-05-27, 14:16:54</h3>
+            <div># New personal (long format)
+
+Write here the new item content
 </div>
-        </element>
-    </section>
+            <button onclick="closeDetails('personal_1748348214_20331');">Close</button>
+        </div>
+</div>
     </main>
 
     <footer>
         ...
     </footer>
 
+    <script src="assets/functions.js"></script>
+    
 </body>
 
 </html>

@@ -25,7 +25,8 @@ class Utils():
                     "title": metadata_file['metadata']['title'],
                     "date": metadata_file['metadata']['date'],
                     "metadata": item,
-                    "content": Path(base_path_str) / element_type / f"{item.stem}.md"
+                    "content_brief": Path(base_path_str) / element_type / f"{item.stem}_brief.md",
+                    "content_long": Path(base_path_str) / element_type / f"{item.stem}_long.md"
                 })
 
         return elements
