@@ -93,8 +93,8 @@ class GeneratorHTML:
         with open(str(elem['content_long']), "r") as f:
             content_long = f.read()
 
-        html = html.replace("{element.content_brief}", content_brief)
-        html = html.replace("{element.content_long}", content_long)
+        html = html.replace("{element.content_brief}", Utils.markdown_to_html(content_brief))
+        html = html.replace("{element.content_long}", Utils.markdown_to_html(content_long))
 
         return html
 

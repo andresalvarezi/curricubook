@@ -1,5 +1,6 @@
 import toml
 from pathlib import Path
+from markdown import markdown
 
 from src.appcli import AppCLI
 
@@ -38,3 +39,7 @@ class Utils():
             return None
 
         return toml.load(curricubook_file)
+
+    @staticmethod
+    def markdown_to_html(markdown_str):
+        return markdown(markdown_str, extensions=['tables'])

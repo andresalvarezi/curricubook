@@ -1,13 +1,9 @@
         <div class="element">
-            <h2>{element.title}</h2>
-            <h3>{element.date}</h3>
             <div>{element.content_brief}</div>
             <button onclick="showDetails('{element.item_name}');">More info</button>
         </div>
 
         <div class="details" id="{element.item_name}">
-            <h2>{element.title}</h2>
-            <h3>{element.date}</h3>
             <div>{element.content_long}</div>
             <button onclick="closeDetails('{element.item_name}');">Close</button>
         </div>
