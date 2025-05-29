@@ -46,5 +46,11 @@ class Utils():
         return markdown(markdown_str, extensions=['tables'])
 
     def generate_lorem_ipsum(num_paragraphs):
-        return lorem.paragraphs(num_paragraphs)
+        paragraphs = lorem.paragraphs(num_paragraphs)
+        
+        final_lorem = ""
+        for paragraph in paragraphs.splitlines():
+            final_lorem += f"{paragraph}\n\n"
+
+        return final_lorem
     

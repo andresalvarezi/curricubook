@@ -28,7 +28,6 @@ class GenerateCommand(Command):
             print()
             sys.exit()
 
-        print(f"Generating current Curricubook with template {self.curricubook_settings['generation']['template']}...")
         self.generate()
         print()
 
@@ -39,15 +38,15 @@ class GenerateCommand(Command):
             print()
             sys.exit()
 
-        if self.curricubook_settings['generation']['generate_pdf']:
+        if self.curricubook_settings['generation_pdf']:
             Utils.print_if_verbose(self.cli, "")
-            print(f"Generating PDF document...")
+            print(f"Generating current Curricubook PDF document with template {self.curricubook_settings['generation_pdf']['template']}...")
             generator = GeneratorPDF(self.cli, self.curricubook_settings)
             generator.generate()
 
-        if self.curricubook_settings['generation']['generate_html']:
+        if self.curricubook_settings['generation_html']:
             Utils.print_if_verbose(self.cli, "")
-            print(f"Generating HTML document...")
+            print(f"Generating current Curricubook HTML document with template {self.curricubook_settings['generation_html']['template']}...")
             generator = GeneratorHTML(self.cli, self.curricubook_settings)
             generator.generate()
 

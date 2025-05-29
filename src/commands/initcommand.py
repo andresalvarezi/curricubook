@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import sys
 import shutil
+import datetime
 
 from src.commands.commandinterface import Command
 from src.appcli import AppCLI
@@ -72,17 +73,26 @@ class InitCommand(Command):
         content += "name = \"My Curricubook\"\n"
         content += "author_name = \"Your name\"\n"
         content += "author_email = \"your@email.com\"\n"
+        content += "links_homepage = \"\"\n"
+        content += "links_linkedin = \"\"\n"
+        content += "links_github = \"\"\n"
         content += "\n"
 
-        content += "[generation]\n"
+        content += "[generation_html]\n"
         content += "template = \"Default\"\n"
-        content += "generate_pdf = true\n"
-        content += "generate_html = true\n"
+        content += "generate = true\n"
+        content += "\n"
+
+        content += "[generation_pdf]\n"
+        content += "template = \"Default\"\n"
+        content += "generate = true\n"
+        content += "units = \"mm\"\n"
+        content += "page_size = \"210x297\"\n"
         content += "\n"
 
         return content
 
-    def default_aboutme_file_content(self, element_type):
+    def default_aboutme_file_content(self):
         now = datetime.datetime.now()
 
         content  = f"# About me\n\n"

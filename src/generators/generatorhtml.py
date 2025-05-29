@@ -14,6 +14,8 @@ class GeneratorHTML:
         self.curricubook_settings = curricubook_settings
 
     def generate(self):
+        self.template_path = Path("templates") / self.curricubook_settings['generation_html']['template'].lower() / "html"
+
         path = Path(self.cli.args.path) / "output" / "html"
         if not path.is_dir():
             path.mkdir(parents=True, exist_ok=True)
@@ -36,7 +38,7 @@ class GeneratorHTML:
         Utils.print_if_verbose(self.cli, "...done!")
 
     def generate_head(self):
-        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "header.html"
+        source_path = self.template_path / "header.html"
         with open(source_path, "r") as f:
             html = f.read()
 
@@ -62,12 +64,16 @@ class GeneratorHTML:
     def generate_aboutme_html(self):
         htmlaboutme = ""
 
-        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "aboutme.html"
+        source_path = self.template_path / "aboutme.html"
         with open(source_path, "r") as f:
             htmlaboutme = f.read()
 
         htmlaboutme = htmlaboutme.replace("{aboutme.author_name}", self.curricubook_settings['curricubook']['author_name'])
         htmlaboutme = htmlaboutme.replace("{aboutme.author_email}", self.curricubook_settings['curricubook']['author_email'])
+
+        htmlaboutme = htmlaboutme.replace("{aboutme.links_homepage}", self.curricubook_settings['curricubook']['links_homepage'])
+        htmlaboutme = htmlaboutme.replace("{aboutme.links_linkedin}", self.curricubook_settings['curricubook']['links_linkedin'])
+        htmlaboutme = htmlaboutme.replace("{aboutme.links_github}", self.curricubook_settings['curricubook']['links_github'])
 
         with open(str(Path(self.cli.args.path) / "aboutme.md"), "r") as f:
             content = f.read()
@@ -79,17 +85,17 @@ class GeneratorHTML:
     def generate_section_html(self, element_type, current_elements):
         html = ""
 
-        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "beginsection.html"
+        source_path = self.template_path / "beginsection.html"
         with open(source_path, "r") as f:
             htmlsection = f.read()
 
-        htmlsection = htmlsection.replace("{section.name}", element_type)
+        htmlsection = htmlsection.replace("{section.name}", element_type.capitalize())
         html += htmlsection
 
         for elem in current_elements:
             html += self.generate_element_html(element_type, elem)
 
-        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "endsection.html"
+        source_path = self.template_path / "endsection.html"
         with open(source_path, "r") as f:
             htmlsection = f.read()
 
@@ -99,7 +105,7 @@ class GeneratorHTML:
         return html
 
     def generate_element_html(self, element_type, elem):
-        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "element.html"
+        source_path = self.template_path / "element.html"
         with open(source_path, "r") as f:
             html = f.read()
 
@@ -119,7 +125,7 @@ class GeneratorHTML:
         return html
 
     def generate_footer(self):
-        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "footer.html"
+        source_path = self.template_path / "footer.html"
         with open(source_path, "r") as f:
             html = f.read()
 
@@ -133,9 +139,7 @@ class GeneratorHTML:
         return html
 
     def copy_template_assets(self):
-        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html"
-
-        css_source = source_path / "assets"
+        css_source = self.template_path / "assets"
         css_target = Path(self.cli.args.path) / "output" / "html" / "assets"
 
         if css_target.is_dir():
