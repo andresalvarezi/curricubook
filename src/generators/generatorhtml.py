@@ -6,6 +6,7 @@ import shutil
 
 from src.appcli import AppCLI
 from src.utils import Utils
+from src.version import Version
 
 class GeneratorHTML:
     def __init__(self, cli, curricubook_settings):
@@ -48,6 +49,8 @@ class GeneratorHTML:
     def generate_body(self):
         html = ""
 
+        html += self.generate_aboutme_html(html)
+
         for element_type in [ "education", "work", "personal", "extra" ]:
             current_elements = Utils.load_elements(self.cli, self.cli.args.path, element_type)
 
@@ -55,6 +58,23 @@ class GeneratorHTML:
                 html += self.generate_section_html(html, element_type, current_elements)
 
         return html
+
+    def generate_aboutme_html(self, html):
+        html = ""
+
+        source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "aboutme.html"
+        with open(source_path, "r") as f:
+            htmlaboutme = f.read()
+
+        htmlaboutme = html.replace("{aboutme.author_name}", self.curricubook_settings['curricubook']['author_name'])
+        htmlaboutme = html.replace("{aboutme.author_email}", self.curricubook_settings['curricubook']['author_email'])
+
+        with open(str(Path(self.cli.args.path) / "aboutme.md"), "r") as f:
+            content = f.read()
+
+        htmlaboutme = html.replace("{aboutme.content}", Utils.markdown_to_html(content))
+
+        return htmlaboutme
 
     def generate_section_html(self, html, element_type, current_elements):
         html = ""
@@ -102,6 +122,9 @@ class GeneratorHTML:
         source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "footer.html"
         with open(source_path, "r") as f:
             html = f.read()
+
+        html = html.replace("{curricubook.core.url}", Version.curricubook_url)
+        html = html.replace("{curricubook.core.version}", Version.curricubook_version)
 
         html = html.replace("{curricubook.name}", self.curricubook_settings['curricubook']['name'])
         html = html.replace("{curricubook.author_name}", self.curricubook_settings['curricubook']['author_name'])

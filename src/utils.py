@@ -1,6 +1,7 @@
 import toml
 from pathlib import Path
 from markdown import markdown
+from lorem_text import lorem
 
 from src.appcli import AppCLI
 
@@ -43,3 +44,7 @@ class Utils():
     @staticmethod
     def markdown_to_html(markdown_str):
         return markdown(markdown_str, extensions=['tables'])
+
+    def generate_lorem_ipsum(num_paragraphs):
+        return lorem.paragraphs(num_paragraphs)
+    

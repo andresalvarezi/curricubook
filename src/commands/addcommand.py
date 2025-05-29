@@ -78,7 +78,7 @@ class AddCommand(Command):
         now = datetime.datetime.now()
 
         content  = f"# New {element_type} (brief format)\n\n"
-        content += f"Write here the new item content\n"
+        content += Utils.generate_lorem_ipsum(1)
 
         return content
 
@@ -86,7 +86,7 @@ class AddCommand(Command):
         now = datetime.datetime.now()
 
         content  = f"# New {element_type} (long format)\n\n"
-        content += f"Write here the new item content\n"
+        content += Utils.generate_lorem_ipsum(5)
 
         return content
 

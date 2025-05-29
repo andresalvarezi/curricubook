@@ -61,6 +61,9 @@ class InitCommand(Command):
         with open(os.path.join(self.cli.args.path, "curricubook.toml"), "w") as project_file:
             project_file.write(self.default_project_file_content())
         
+        with open(os.path.join(self.cli.args.path, "aboutme.md"), "w") as project_file:
+            project_file.write(self.default_aboutme_file_content())
+        
         Utils.print_if_verbose(self.cli, "")
         print("New Curricubook initialized!")
 
@@ -76,5 +79,13 @@ class InitCommand(Command):
         content += "generate_pdf = true\n"
         content += "generate_html = true\n"
         content += "\n"
+
+        return content
+
+    def default_aboutme_file_content(self, element_type):
+        now = datetime.datetime.now()
+
+        content  = f"# About me\n\n"
+        content += Utils.generate_lorem_ipsum(2)
 
         return content
