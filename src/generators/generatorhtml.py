@@ -49,34 +49,34 @@ class GeneratorHTML:
     def generate_body(self):
         html = ""
 
-        html += self.generate_aboutme_html(html)
+        html += self.generate_aboutme_html()
 
         for element_type in [ "education", "work", "personal", "extra" ]:
             current_elements = Utils.load_elements(self.cli, self.cli.args.path, element_type)
 
             if len(current_elements) > 0:
-                html += self.generate_section_html(html, element_type, current_elements)
+                html += self.generate_section_html(element_type, current_elements)
 
         return html
 
-    def generate_aboutme_html(self, html):
-        html = ""
+    def generate_aboutme_html(self):
+        htmlaboutme = ""
 
         source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "aboutme.html"
         with open(source_path, "r") as f:
             htmlaboutme = f.read()
 
-        htmlaboutme = html.replace("{aboutme.author_name}", self.curricubook_settings['curricubook']['author_name'])
-        htmlaboutme = html.replace("{aboutme.author_email}", self.curricubook_settings['curricubook']['author_email'])
+        htmlaboutme = htmlaboutme.replace("{aboutme.author_name}", self.curricubook_settings['curricubook']['author_name'])
+        htmlaboutme = htmlaboutme.replace("{aboutme.author_email}", self.curricubook_settings['curricubook']['author_email'])
 
         with open(str(Path(self.cli.args.path) / "aboutme.md"), "r") as f:
             content = f.read()
 
-        htmlaboutme = html.replace("{aboutme.content}", Utils.markdown_to_html(content))
+        htmlaboutme = htmlaboutme.replace("{aboutme.content}", Utils.markdown_to_html(content))
 
         return htmlaboutme
 
-    def generate_section_html(self, html, element_type, current_elements):
+    def generate_section_html(self, element_type, current_elements):
         html = ""
 
         source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "beginsection.html"
@@ -87,7 +87,7 @@ class GeneratorHTML:
         html += htmlsection
 
         for elem in current_elements:
-            html += self.generate_element_html(html, element_type, elem)
+            html += self.generate_element_html(element_type, elem)
 
         source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "endsection.html"
         with open(source_path, "r") as f:
@@ -98,7 +98,7 @@ class GeneratorHTML:
 
         return html
 
-    def generate_element_html(self, html, element_type, elem):
+    def generate_element_html(self, element_type, elem):
         source_path = Path("templates") / self.curricubook_settings['generation']['template'].lower() / "html" / "element.html"
         with open(source_path, "r") as f:
             html = f.read()
