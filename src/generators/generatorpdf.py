@@ -12,6 +12,7 @@ class GeneratorPDF:
         self.curricubook_settings = curricubook_settings
 
     def generate(self):
+        self.template_metadata = Utils.load_template_metadata(self.cli, Path("templates") / self.curricubook_settings['generation_pdf']['template'])
         self.template_path = Path("templates") / self.curricubook_settings['generation_pdf']['template'].lower() / "pdf"
 
         path = Path(self.cli.args.path) / "output" / "pdf"

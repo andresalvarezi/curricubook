@@ -57,13 +57,9 @@ class AddCommand(Command):
         print(f"...new element created!")
         print()
 
-        target_dir = Path(self.cli.args.path) / element_type
-        metadata_file = toml.load(Path(self.cli.args.path) / element_type / f"{element_type}_{filename_fragment}.toml")
-
-        print(f"{metadata_file['metadata']['title']} ({metadata_file['metadata']['date']})")
-        print(f" - Metadata file: {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}.toml")
-        print(f" - Content file (brief): {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}_brief.toml")
-        print(f" - Content file (long): {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}_long.toml")
+        print(f"Metadata file: {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}.toml")
+        print(f"Content file (brief): {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}_brief.toml")
+        print(f"Content file (long): {Path(self.cli.args.path)}/{element_type}/{element_type}_{filename_fragment}_long.toml")
 
     def generate_name(self):
         timestamp_numeric = datetime.datetime.now().timestamp()
@@ -95,7 +91,11 @@ class AddCommand(Command):
 
         content  = f"[metadata]\n"
         content += f"title = \"New {element_type}\"\n"
-        content += f"date = \"{now.year}-{now.month:02d}-{now.day:02d}, {now.hour:02d}:{now.minute:02d}:{now.second:02d}\"\n"
+        content += f"start_date_year = {now.year}\n"
+        content += f"start_date_month = {now.month}\n"
+        content += f"end_date_year = {now.year}\n"
+        content += f"end_date_month = {now.month}\n"
+        content += f"image = \"\"\n"
 
         return content
 

@@ -14,32 +14,55 @@ class Utils():
 
     @staticmethod
     def load_elements(cli, base_path_str, element_type):
-        elements = []
+        elements = {}
 
         target_dir = Path(base_path_str) / element_type
+        Utils.print_if_verbose(cli, f"Loading Curricubook elements from: {target_dir}")
 
         for item in target_dir.iterdir():
             if item.is_file() and item.suffix.lower() == '.toml':
                 metadata_file = toml.load(item)
 
-                elements.append({
+                key = f"{metadata_file['metadata']['start_date_year']}_{metadata_file['metadata']['start_date_month']}"
+                while key in elements:
+                    key += "."
+
+                elements[key] = {
                     "item_name": item.stem,
                     "title": metadata_file['metadata']['title'],
-                    "date": metadata_file['metadata']['date'],
+                    "start_date_year": metadata_file['metadata']['start_date_year'],
+                    "start_date_month": metadata_file['metadata']['start_date_month'],
+                    "end_date_year": metadata_file['metadata']['end_date_year'],
+                    "end_date_month": metadata_file['metadata']['end_date_month'],
                     "metadata": item,
                     "content_brief": Path(base_path_str) / element_type / f"{item.stem}_brief.md",
                     "content_long": Path(base_path_str) / element_type / f"{item.stem}_long.md"
-                })
+                }
 
-        return elements
+        Utils.print_if_verbose(cli, f"Sorting {len(elements)} elements...")
+        elements = dict(sorted(elements.items()))
+
+        return elements.values()
 
     @staticmethod
     def load_curricubook_settings(cli, curricubook_path):
         curricubook_file = Path(curricubook_path)
+        Utils.print_if_verbose(cli, f"Loading Curricubook settings from: {curricubook_file}")
+
         if not curricubook_file.is_file():
             return None
 
         return toml.load(curricubook_file)
+
+    @staticmethod
+    def load_template_metadata(cli, template_path):
+        template_file = Path(template_path) / "metadata.toml"
+        Utils.print_if_verbose(cli, f"Loading template metadata from: {template_file}")
+
+        if not template_file.is_file():
+            return None
+
+        return toml.load(template_file)
 
     @staticmethod
     def markdown_to_html(markdown_str):

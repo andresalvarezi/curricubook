@@ -84,6 +84,20 @@ footer {
     margin: 0 0 24px 0;
 }
 
+.element-tile {
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 6px #ddd;
+    background-color: #fff;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 24px;
+    width: calc(33% - 24px);
+    height: 200px;
+    overflow: hidden;
+    display: inline;
+    margin: 0 0 24px 0;
+}
+
 .element:hover, .aboutme:hover {
     box-shadow: 3px 3px 9px #aaa;
 }
@@ -130,6 +144,10 @@ footer {
     overflow: auto;
     z-index: 1000;
     display: none;
+}
+
+.cleaner {
+    clear: both;
 }
 
 /* TABLET */

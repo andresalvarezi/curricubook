@@ -14,6 +14,7 @@ class GeneratorHTML:
         self.curricubook_settings = curricubook_settings
 
     def generate(self):
+        self.template_metadata = Utils.load_template_metadata(self.cli, Path("templates") / self.curricubook_settings['generation_html']['template'].lower())
         self.template_path = Path("templates") / self.curricubook_settings['generation_html']['template'].lower() / "html"
 
         path = Path(self.cli.args.path) / "output" / "html"
@@ -38,7 +39,7 @@ class GeneratorHTML:
         Utils.print_if_verbose(self.cli, "...done!")
 
     def generate_head(self):
-        source_path = self.template_path / "header.html"
+        source_path = self.template_path / self.template_metadata['html']['header']
         with open(source_path, "r") as f:
             html = f.read()
 
@@ -64,7 +65,7 @@ class GeneratorHTML:
     def generate_aboutme_html(self):
         htmlaboutme = ""
 
-        source_path = self.template_path / "aboutme.html"
+        source_path = self.template_path / self.template_metadata['html']['about_me']
         with open(source_path, "r") as f:
             htmlaboutme = f.read()
 
@@ -85,7 +86,7 @@ class GeneratorHTML:
     def generate_section_html(self, element_type, current_elements):
         html = ""
 
-        source_path = self.template_path / "beginsection.html"
+        source_path = self.template_path / self.template_metadata['html'][element_type]['begin_section']
         with open(source_path, "r") as f:
             htmlsection = f.read()
 
@@ -95,7 +96,7 @@ class GeneratorHTML:
         for elem in current_elements:
             html += self.generate_element_html(element_type, elem)
 
-        source_path = self.template_path / "endsection.html"
+        source_path = self.template_path / self.template_metadata['html'][element_type]['end_section']
         with open(source_path, "r") as f:
             htmlsection = f.read()
 
@@ -105,14 +106,17 @@ class GeneratorHTML:
         return html
 
     def generate_element_html(self, element_type, elem):
-        source_path = self.template_path / "element.html"
+        source_path = self.template_path / self.template_metadata['html'][element_type]['element']
         with open(source_path, "r") as f:
             html = f.read()
 
         html = html.replace("{element.item_name}", elem['item_name'])
         html = html.replace("{element.title}", elem['title'])
-        html = html.replace("{element.date}", elem['date'])
- 
+        html = html.replace("{element.start_date_year}", str(elem['start_date_year']))
+        html = html.replace("{element.start_date_month}", str(elem['start_date_month']))
+        html = html.replace("{element.end_date_year}", str(elem['end_date_year']))
+        html = html.replace("{element.end_date_month}", str(elem['end_date_month']))
+
         with open(str(elem['content_brief']), "r") as f:
             content_brief = f.read()
 
@@ -125,7 +129,7 @@ class GeneratorHTML:
         return html
 
     def generate_footer(self):
-        source_path = self.template_path / "footer.html"
+        source_path = self.template_path / self.template_metadata['html']['footer']
         with open(source_path, "r") as f:
             html = f.read()
 
