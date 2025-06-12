@@ -79,12 +79,12 @@ class InitCommand(Command):
         content += "\n"
 
         content += "[generation_html]\n"
-        content += "template = \"Default\"\n"
+        content += "template = \"Basic\"\n"
         content += "generate = true\n"
         content += "\n"
 
         content += "[generation_pdf]\n"
-        content += "template = \"Default\"\n"
+        content += "template = \"Basic\"\n"
         content += "generate = true\n"
         content += "units = \"mm\"\n"
         content += "page_size = \"210x297\"\n"

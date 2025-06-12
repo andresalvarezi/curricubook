@@ -1,0 +1,28 @@
+[template]
+
+name = "Default template"
+author_name = "Andrés Álvarez Iglesias"
+author_email = "andres@alvarezperello.com"
+author_url = "https://github.com/andresalvarezi/curricubook"
+
+[html]
+
+header = "header.html"
+about_me = "aboutme.html"
+footer = "footer.html"
+
+education.begin_section = "begineducationsection.html"
+education.end_section = "endsection.html"
+education.element = "element.html"
+
+work.begin_section = "beginworksection.html"
+work.end_section = "endsection.html"
+work.element = "element.html"
+
+personal.begin_section = "beginpersonalsection.html"
+personal.end_section = "endsection.html"
+personal.element = "element.html"
+
+extra.begin_section = "beginextrasection.html"
+extra.end_section = "endsection.html"
+extra.element = "element.html"

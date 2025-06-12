@@ -1,0 +1,19 @@
+<div class="card blue-grey white-text element-card">
+    <div class="card-content">
+      <p>{element.content_brief}</p>
+    </div>
+    <div class="card-action">
+        <button class="btn text waves-effect waves-light white-text" popovertarget="modal_{element.item_name}">
+            More info
+        </button>
+    </div>
+</div>
+
+<div id="modal_{element.item_name}" class="modal" popover>
+    <div class="modal-content">
+        <p>{element.content_long}</p>
+    </div>
+    <div class="modal-footer">
+        <button tabindex="0" class="waves-effect btn-flat" popovertarget="modal1">Agree</button>
+    </div>
+</div>
