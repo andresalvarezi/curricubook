@@ -8,9 +8,11 @@ With Curricubook you can:
 * Export them as a short resumee or as a full detailed book abouryour whole carreer
 * Track your profesional life in an prganized way
 
+
 # Installation and basic usage
 
 To be done
+
 
 # Development environment
 
@@ -29,4 +31,57 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 3) Initialize the virtual environment and download all dependencies
 ```bash
 uv sync
+```
+
+
+# Serve the output directory
+
+```bash
+python -m http.server 8080 --directory demo/output/html/
+```
+
+
+# Google IDX configuration
+
+After import the GitHub repo:
+
+1) Create .idx/dev.nix file with:
+
+```
+{ pkgs, ... }: {
+
+  # Which nixpkgs channel to use.
+  channel = "stable-23.11"; # or "unstable"
+
+  # Use https://search.nixos.org/packages to find packages
+  packages = [
+    pkgs.python313
+  ];
+
+  # Sets environment variables in the workspace
+  env = {
+  };
+
+  # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
+  idx.extensions = [
+  ];
+
+  # Enable previews and customize configuration
+  idx.previews = {
+    enable = true;
+    previews = {
+      web = {
+        command = [
+          "python3"
+          "-m"
+          "http.server"
+          "--directory"
+          "/home/user/curricubook/demo/output/html/"
+          "$PORT"
+        ];
+        manager = "web";
+      };
+    };
+  };
+}
 ```
